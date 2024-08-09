@@ -1,0 +1,43 @@
+Coding Question of 9 Aug 2024------
+
+Question:1-Given two arrays arr1[] and arr2[], the task is to find the number of elements in the union between these two arrays.The Union of the two arrays can be defined as the set containing distinct elements from both arrays. If there are repetitions, then only one element occurrence should be there in the union.
+Note: Elements are not necessarily distinct.
+// User function Template for Java
+
+class Solution {
+    public static int doUnion(int arr1[], int arr2[]) {
+        // Your code here
+        HashMap<Integer, Integer> unionMap = new HashMap<>();
+        for (int i=0; i < arr1.length; i++) {
+            if (!unionMap.containsKey(arr1[i])) {
+                unionMap.put(arr1[i], 1);
+            }
+        }
+        for (int i = 0; i < arr2.length; i++) {
+            if (!unionMap.containsKey(arr2[i])) {
+                unionMap.put(arr2[i], 1);
+            }
+        }
+        return unionMap.size();
+    }
+}
+
+Question:2-Given an array arr[] and an integer k where k is smaller than the size of the array, the task is to find the kth smallest element in the given array. It is given that all array elements are distinct.
+Note:-  l and r denotes the starting and ending index of the array.
+
+
+//User function Template for Java
+
+class Solution{
+    public static int kthSmallest(int[] arr, int l, int r, int k) 
+    { 
+     PriorityQueue<Integer> maxHeap=new PriorityQueue<>((a, b) -> b - a);  
+        for(int i=0;i<arr.length;i++){
+            maxHeap.add(arr[i]);
+            if(maxHeap.size()>k){
+                maxHeap.poll();
+            }
+        }  
+        return maxHeap.peek();
+    } 
+}
