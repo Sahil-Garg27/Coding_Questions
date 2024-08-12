@@ -1,0 +1,53 @@
+Kadane's Algorithm
+
+Given an integer array arr[]. Find the contiguous sub-array(containing at least one number) that has the maximum sum and return its sum.
+
+Examples:
+
+Input: arr[] = [1, 2, 3, -2, 5]
+Output: 9
+Explanation: Max subarray sum is 9 of elements (1, 2, 3, -2, 5) which is a contiguous subarray.
+Input: arr[] = [-1, -2, -3, -4]
+Output: -1
+Explanation: Max subarray sum is -1 of element (-1)
+Input: arr[] = [5, 4, 7]
+Output: 16
+Explanation: Max subarray sum is 16 of element (5, 4, 7)
+
+code
+class Solution {
+
+    // arr: input array
+    // Function to find the sum of contiguous subarray with maximum sum.
+    long maxSubarraySum(int[] arr) {
+
+        // Your code here
+        long curr_sum=arr[0];
+        long max_sum=arr[0];
+        
+        for(int i=1;i<arr.length;i++){
+            curr_sum=Math.max(arr[i], curr_sum+arr[i]);
+            max_sum=Math.max(curr_sum, max_sum);
+        }
+        return max_sum;
+    }
+}
+
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+
+Explanation 
+
+Kadane's Algorithm - It is a dynamic programming technique used to find the maximum subarray sum within a one-dimensional array.
+It efficiently computes the maximum sum of a contiguous subarray,
+and its simplicity and effectiveness make it a popular choice for solving related problems.
+
+Initialize twp variables, max_sum and curr_sum , to the first element of the array.
+Iterate over the array from the second element to the end
+Calculate the maximum sun ending at the current position
+curr_sum=max(arr[i], curr_sum+arr[i])
+Update max_sum to be the maximum of max_sum and curr_sum
+max_sum=max(curr_sum, max_sum)
+Return max_sum
