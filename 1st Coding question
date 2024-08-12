@@ -1,0 +1,38 @@
+Reverse sub array
+Given an array arr, you need to reverse a subarray of that array. The range of this subarray is given by indices L and R (1-based indexing).
+
+Examples:
+
+Input: arr[] = [1, 2, 3, 4, 5, 6, 7] and L = 2 and R = 4
+Output: [1, 4, 3, 2, 5, 6, 7]
+Explanation: After reversing the elements in range 2 to 4 (2, 3, 4), modified array is 1, 4, 3, 2, 5, 6, 7.
+Input: arr[] = [1, 6, 7, 4] and L = 1 and R = 4
+Output: [4, 7, 6, 1]
+Explanation: After reversing the elements in range 1 to 4 (1, 6, 7, 4), modified array is 4, 7, 6, 1.
+
+Code
+
+class Solution {
+    public static ArrayList<Integer> reverseSubArray(ArrayList<Integer> arr, int l,int r) {
+        // code here
+        
+        while(l<r){
+            int temp=arr.get(l-1);
+            arr.set(l-1,arr.get(r-1));
+            arr.set(r-1,temp);
+            l++;
+            r--;
+        }
+        return arr;
+    }
+}
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Explanation
+
+Two Pointer Approach: I used already present two pointers left and right and 
+using a while loop I swap that pointer with the help of the temp variable. 
+After swapping, I increased the left pointer and decreased the right until 
+they did not cross each other.
