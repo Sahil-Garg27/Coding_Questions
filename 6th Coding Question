@@ -1,0 +1,50 @@
+Count pairs with given sum
+
+Given an array arr, and an integer k, find the number of pairs of elements in the array whose sum is k.
+
+Examples:
+
+Input: k = 6, arr[] = [1, 5, 7, 1]
+Output: 2
+Explanation: 
+arr[0] + arr[1] = 1 + 5 = 6 
+and arr[1] + arr[3] = 5 + 1 = 6.
+Input: k = 2, arr[] = [1, 1, 1, 1]
+Output: 6
+Explanation: Each 1 will produce sum 2 with any 1.
+Input: k = 2, arr[] = [4, 12, 5, 4]
+Output: 0
+Explanation: There are 0 pairs with sum 2
+
+Code 
+
+class Solution {
+    int getPairsCount(int[] arr, int sum) {
+        // code here
+        HashMap<Integer,Integer> map=new HashMap<>();
+        int count=0;
+        for(int i=0;i<arr.length;i++){
+            int diff=sum-arr[i];
+            
+            if(map.containsKey(diff)){
+                count=count+map.get(diff);
+            }
+            map.put(arr[i],map.getOrDefault(arr[i],0)+1);
+        }
+       return count;
+    }
+}
+ 
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Explanantion:
+
+Initialize a HashMap to Store the frequency of each element.
+and count to store the count o pairs. traverse the array, for each element, calculate the difference of k-arr[i], i search inside HashMap.
+If the diff exists in the HashMap, add its count to the total number of pairs.
+Update the frequency Increment the count of the current element in the HashMap.
+
+Return the total count: The number of valid pairs is returned.
+
+
