@@ -1,0 +1,66 @@
+Factorials of large numbers
+
+Given an integer N, find its factorial. return a list of integers denoting the digits that make up the factorial of N.
+
+Example 1:
+
+Input: N = 5
+Output: [1,2,0]
+Explanation : 5! = 1*2*3*4*5 = 120
+Example 2:
+
+Input: N = 10
+Output: [3,6,2,8,8,0,0]
+Explanation :
+10! = 1*2*3*4*5*6*7*8*9*10 = 3628800
+
+//Code
+
+class Solution {
+    static ArrayList<Integer> factorial(int N) {
+        // code here
+        ArrayList<Integer> result=new ArrayList<>();
+        int size=0;
+        int carry=0;
+        result.add(0,1);
+        size=1;
+        int val=2;
+        
+        while(val<=N){
+            for(int i=size-1;i>=0;i--){
+                int temp=result.get(i)*val+carry;
+                result.set(i,temp%10);
+                carry=temp/10;
+            }
+            while(carry!=0){
+                result.add(0,carry%10);
+                carry=carry/10;
+                size++;
+            }
+            val++;
+        }
+        return result;
+    }
+}
+
+Time Complexity : O(nlogn)
+Space Complexity : O(nlogn)
+
+Explanation:
+
+Initialization:
+Create an ArrayList<Integer> named result to store the digits of the factorial. Initially, it should contain a single element 1, representing 0! or 1!.
+
+Set up variables size and carry. Size should track the number of digits in the factorial, and carry should hold any overflow that occurs during digit multiplication.
+
+Main Loop:
+Run a while loop from val = 2 to val = N. For each val, multiply the result list by val.
+
+Multiplication and Carry Handling:
+For each digit in the result, multiply the digit by val and add any carry from the previous multiplication. Update the digit in the result list with the remainder of the division by 10 (temp % 10), and update the carry with the quotient of the division (temp / 10).
+
+Handling Remaining Carry:
+After processing all digits, if there's any carry left, break it down into individual digits (using modulo 10) and add it to the front of the result list. Increment the size accordingly.
+
+Result:
+Finally, return the result list, which now contains the digits of the factorial in reverse order.
