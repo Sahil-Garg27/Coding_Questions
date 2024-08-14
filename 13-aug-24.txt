@@ -1,0 +1,136 @@
+// coding Questions
+Question Link: https://www.geeksforgeeks.org/problems/maximum-product-subarray3604/1
+
+Question: Maximum Product Subarray
+Given an array arr[] that contains n integers (may be positive, negative or zero). Find the product of the maximum product subarray.
+
+Note: It is guarenteed that the output fits in 64-bit integer.
+
+Approach: 1. Tracking the maximum and minimum products ending at each position (maxP and minP), as a negative value can flip the minimum to a maximum.2.Iteratively updating these values based on the current element and its products with maxP and minP.3.Maintaining the overall maximum product found so far (current_Max).
+
+Code:  long maxProduct(int[] arr, int n) {
+        // code here
+        long maxP = arr[0];
+        long minP = arr[0];
+        long current_Max = arr[0];
+        
+        for(int i : arr){
+            long temp = Math.max(i, Math.max(i * maxP, i * minP));
+            minP = Math.min(i, Math.min(i * maxP, i * minP));
+            maxP = temp;
+            current_Max = Math.max(maxP, current_Max);
+        }
+        return current_Max;
+    }
+
+    Time complexity: O(N);
+    Space complexity: O(1)
+
+
+Question2 Link: https://www.geeksforgeeks.org/problems/buy-and-sell-a-share-at-most-twice/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=practice_card
+
+Question: Buy and Sell a Share at most twice
+In daily share trading, a buyer buys shares in the morning and sells them on the same day. If the trader is allowed to make at most 2 transactions in a day, the second transaction can only start after the first one is complete (buy->sell->buy->sell). The stock prices throughout the day are represented in the form of an array of prices. 
+
+Given an array price of size n, find out the maximum profit that a share trader could have made.
+
+Approach: 1. Recursion: The approach recursively maximises profit by evaluating all potential buy-sell pairs and future transactions, updating the maximum profit accordingly.
+2. Memoization: In the memoisation approach, the recursive solution is enhanced by storing the results of previously computed subproblems in a table, thus avoiding redundant calculations and improving performance.
+3. Dp: in this i am using iterative approach and in this i am using dp array and reduce the perfomance with time O(N) 
+
+ public static int dfs(int[] price, int day, int n, int transactionDays){
+        if(transactionDays == 0 || day >= n) return 0;
+        
+        int max_Profit= dfs(price, day+1, n, transactionDays);
+        
+        for(int i = day+1; i < n; i++){
+            int profit = price[i] - price[day] + dfs(price, i+1, n,  transactionDays - 1);
+            max_Profit = Math.max(profit, max_Profit);
+        }
+        return max_Profit;
+    }
+    
+    public static int dfs(int[] price, int day, int n, int transactionDays, int[][] memo){
+        if(transactionDays == 0 || day >= n) return 0;
+        
+        if(memo[day][transactionDays] != -1) return memo[day][transactionDays];
+        
+        int maxProfit= dfs(price, day+1, n, transactionDays, memo);
+        
+        for(int i = day+1; i < n; i++){
+            int profit = price[i] - price[day] + dfs(price, i+1, n,  transactionDays - 1, memo);
+            maxProfit = Math.max(profit, maxProfit);
+        }
+        memo[day][transactionDays] = maxProfit;
+        return maxProfit;
+    }
+    
+       public static int maxProfit(int n, int[] prices) {
+        if (n == 0) return 0;
+
+        int[][] dp = new int[n][3];
+
+        for (int j = 1; j <= 2; j++) {
+            int maxDiff = -prices[0];
+            for (int i = 1; i < n; i++) {
+                dp[i][j] = Math.max(dp[i - 1][j], prices[i] + maxDiff);
+                maxDiff = Math.max(maxDiff, dp[i - 1][j - 1] - prices[i]);
+            }
+        }
+        return dp[n - 1][2];
+    }
+
+    Time complexity: O(N)
+    Time complexity: O(N)
+
+
+Question3 Link: https://www.geeksforgeeks.org/problems/chocolate-distribution-problem3825/1
+
+Question 3; Chocolate Distribution Problem
+Given an array A[ ] of positive integers of size N, where each value represents the number of chocolates in a packet. Each packet can have a variable number of chocolates. There are M students, the task is to distribute chocolate packets among M students such that :
+1. Each student gets exactly one packet.
+2. The difference between maximum number of chocolates given to a student and minimum number of chocolates given to a student is minimum.
+
+Approach: 1. In this question first i sorted the array and the i start the loop from 0 to length - m  The function sorts the list of integers and then examines all possible subsets of size m. It calculates the difference between the maximum and minimum values for each subset, tracking the smallest difference found. Finally, it returns the smallest difference.
+
+Code:   public long findMinDiff (ArrayList<Integer> a, int n, int m)
+    {
+        if(m > n) return -1;
+         Collections.sort(a);
+          long minDifference = Integer.MAX_VALUE;
+         for(int i = 0; i + m - 1 < n; i++){
+             long diffrence= a.get(i + m - 1) - a.get(i);
+             minDifference = Math.min(minDifference, diffrence);
+         }
+         return minDifference;
+    }
+
+    Time Complexity: O(nlogn)
+    Space Complexity: O(1);
+
+
+Question4 link: https://www.geeksforgeeks.org/problems/minimum-swaps-required-to-bring-all-elements-less-than-or-equal-to-k-together4847/1
+Question 4: Minimum swaps and K together
+
+Question 4: Given an array arr of n positive integers and a number k. One can apply a swap operation on the array any number of times, i.e choose any two index i and j (i < j) and swap arr[i] , arr[j] . Find the minimum number of swaps required to bring all the numbers less than or equal to k together, i.e. make them a contiguous subarray.
+
+Approach: Count how many elements are <= k (fav) and how many > k is the initial window of size fav. Sliding windows across the array updating the count of elements > known fav as the window moves. Keeping the track of  found in any window, which corresponds to the minimum number of swaps needed.
+
+Code:    // Function for finding maximum and value pair
+    public static int minSwap (int arr[], int n, int k) {
+        int fav = 0; int nonfav = 0;
+        for(int i = 0; i < n; i++) if(arr[i] <= k) fav++;
+        for(int i = 0; i < fav; i++) if(arr[i] > k) nonfav++;
+        int l = 0, r = fav-1, ans = Integer.MAX_VALUE;
+        while(r < n){
+            ans = Math.min(ans, nonfav);
+            r++;
+            if(r < n && arr[r] > k) nonfav++;
+            if(l < n && arr[l] > k) nonfav--;
+            l++;
+        }
+        return ans;
+    }
+
+    Time complexity: O(N)
+    Space Complexity: O(1)
