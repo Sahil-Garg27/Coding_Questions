@@ -1,0 +1,148 @@
+// Coding Question
+
+Question1: Longest Prefix Suffix
+Given a string of characters, find the length of the longest proper prefix which is also a proper suffix.
+
+NOTE: Prefix and suffix can be overlapping but they should not be equal to the entire string.
+
+Question Link: https://www.geeksforgeeks.org/problems/longest-prefix-suffix2527/1
+
+Approach: The approach builds an array arr to store the longest prefix which is also a suffix (LPS) for the string s. By comparing prefix and suffix characters, it updates LPS values and adjusts pointers to track matches or reset based on previous LPS values.
+
+Code:  int lps(String s) {
+        // code here
+        int[] arr = new int[s.length()];
+        int pre = 0, suff = 1;
+        
+        while(suff < s.length()){
+            if(s.charAt(pre) == s.charAt(suff)){
+                arr[suff] = pre+1;
+                pre++;
+                suff++;
+            }else{
+                if(pre == 0){
+                    arr[suff] = 0;
+                    suff++;
+                }else{
+                    pre = arr[pre-1];
+                }
+            }
+        }
+        return arr[suff -1];
+    }
+
+
+Question2: Count Palindromic Subsequences
+
+Given a string str of length N, you have to find number of palindromic subsequence (need not necessarily be distinct) present in the string str.
+Note: You have to return the answer module 109+7;
+
+Question Link: https://www.geeksforgeeks.org/problems/count-palindromic-subsequences/1
+
+Approach: This approach uses dynamic programming to fill a 2D array dp where dp[i][j] represents the number of palindromic subsequences in the substring from index i to j. For each gap between indices, it updates dp[i][j] based on whether the characters match or not, ensuring results are within a given modulus.
+
+Code:  long countPS(String str)
+    {
+        // Your code here
+        long[][] dp = new long[str.length()][str.length()];
+        long mod = 1000000007;
+        
+        for(int gap = 0;gap<str.length();gap++) {
+            for(int i = 0,j=gap;i<dp.length&&j<dp[i].length;i++,j++) {
+                if(gap==0) {
+                    dp[i][j]=1;
+                } else {
+                    char c1 = str.charAt(i);
+                    char c2 = str.charAt(j);
+                    if(c1==c2) {
+                        dp[i][j]=(1+dp[i][j-1]+dp[i+1][j])%mod;
+                    } else {
+                        dp[i][j]=(dp[i][j-1]+dp[i+1][j]-dp[i+1][j-1]+mod)%mod;
+                    }
+                }
+            }
+        }
+        
+        return dp[0][dp[0].length-1];
+    }
+
+
+Question 3: Roman Number to Integer
+Given a string in roman no format (s)  your task is to convert it to an integer . Various symbols and their values are given below.
+I 1
+V 5
+X 10
+L 50
+C 100
+D 500
+M 1000
+
+
+
+Question Link: https://www.geeksforgeeks.org/problems/roman-number-to-integer3201/1
+
+Approach: The approach converts a Roman numeral to a decimal by iterating through the string from right to left, adding the value of each Roman numeral to the result if it's greater than or equal to the previous value, or subtracting it if it's smaller. A map is used to store the values of the Roman numerals for quick lookup.
+
+
+Code:    public int romanToDecimal(String s) {
+        // code here
+         // Create a map to store the values of Roman numerals
+        Map<Character, Integer> romanMap = new HashMap<>();
+        romanMap.put('I', 1);
+        romanMap.put('V', 5);
+        romanMap.put('X', 10);
+        romanMap.put('L', 50);
+        romanMap.put('C', 100);
+        romanMap.put('D', 500);
+        romanMap.put('M', 1000);
+
+        int result = 0;
+        int prevValue = 0;
+
+        // Iterate through the string from right to left
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char currentChar = s.charAt(i);
+            int currentValue = romanMap.get(currentChar);
+
+            // If the current value is less than the previous value, subtract it
+            if (currentValue < prevValue) {
+                result -= currentValue;
+            } else {
+                // Otherwise, add it
+                result += currentValue;
+            }
+
+            // Update the previous value
+            prevValue = currentValue;
+        }
+
+        return result;
+    }
+
+Question4 : Second most repeated string in a sequence
+Given a sequence of strings, the task is to find out the second most repeated (or frequent) string in the given sequence.
+
+Note: No two strings are the second most repeated, there will be always a single string.
+
+Question Link: https://www.geeksforgeeks.org/problems/second-most-repeated-string-in-a-sequence0534/1
+Approach; The approach counts the frequency of each string in the array using a map, then sorts the entries by frequency in descending order. The second most frequent string is returned from the sorted list, or null if there are fewer than two unique strings.
+
+Code: 
+    String secFrequent(String arr[], int N)
+    {
+         // Step 1: Count the occurrences of each string
+        Map<String, Integer> frequencyMap = new HashMap<>();
+        for (String str : arr) {
+            frequencyMap.put(str, frequencyMap.getOrDefault(str, 0) + 1);
+        }
+
+        // Step 2: Convert the map entries to a list and sort them by frequency
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(frequencyMap.entrySet());
+        entryList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+
+        // Step 3: Retrieve the second most frequent string
+        if (entryList.size() >= 2) {
+            return entryList.get(1).getKey();
+        }
+        return null; 
+    }
