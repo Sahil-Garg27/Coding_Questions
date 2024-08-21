@@ -1,0 +1,57 @@
+// coding questions
+Question1 : Given an array arr. Your task is to find the minimum and maximum elements in the array.
+Note: Return an array that contains two elements the first one will be a minimum element and the second will be a maximum of an array.
+
+// Approach: 1. Start by setting min to Long.MAX_VALUE and max to Long.MIN_VALUE to ensure that it will be updated with actual values from the array while iterating. 2. While iterating over the array I am checking that if the value is smaller than min i put the value in min and the same for max if value is greater than max i put the value in max and in the last return the min and max value in pair
+class Solution {
+    public Pair<Long, Long> getMinMax(int[] arr) {
+        Pair<Long, Long> ans = new Pair<Long, Long>(null, null);
+        if(arr.length == 0) return ans;
+        Long min = Long.MAX_VALUE;
+        Long max = Long.MIN_VALUE;
+        for(int i = 0; i < arr.length; i++){
+            long val = arr[i];
+            if(min > val) min = val;
+            if(max < val) max = val;
+        }
+        return new Pair<>(min, max);
+    }
+}
+Time complexity: O(N)
+Space complexity: O(1)
+
+Question2: Given an unsorted array Arr of N positive and negative numbers. Your task is to create an array of alternate positive and negative numbers without changing the relative order of positive and negative numbers.
+Note: Array should start with a positive number and 0 (zero) should be considered a positive element.
+
+Approach: I started by separate the positive and negative numbers from the input array into two different lists. Then, I went through these lists and alternated between adding a positive and a negative number back into the original array. If there were extra numbers left after alternating, I simply appended them at the end of the array. 
+
+
+class Solution {
+    void rearrange(int arr[], int n) {
+        // code here
+        ArrayList<Integer> posArr = new ArrayList<>();
+        ArrayList<Integer> negArr = new ArrayList<>();
+        for(int i : arr){
+            if(i >= 0) posArr.add(i);
+            else negArr.add(i);
+        }
+        int index = 0;
+        int pos = 0;
+        int neg = 0;
+        while(pos < posArr.size() && neg < negArr.size()){
+            arr[index++] = posArr.get(pos++);
+            arr[index++] = negArr.get(neg++);
+        }
+        while(pos < posArr.size()){
+           arr[index++] = posArr.get(pos++); 
+        }
+        
+        while(neg < negArr.size()){
+            arr[index++] = negArr.get(neg++); 
+        }
+        
+    }
+}
+
+Time complexity: O(N)
+Space complexity: O(N)
